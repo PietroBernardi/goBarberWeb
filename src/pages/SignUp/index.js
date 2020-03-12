@@ -1,9 +1,12 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Form, Input } from '@rocketseat/unform';
 import * as Yup from 'yup';
 
 import logo from '~/assets/logo.svg';
+
+import { signUpRequest } from '~/store/modules/auth/actions';
 
 const schema = Yup.object().shape({
   name: Yup.string().required('Name is Required'),
@@ -11,13 +14,15 @@ const schema = Yup.object().shape({
     .email('Invalid Email Format')
     .required('Email is Required'),
   password: Yup.string()
-    .min(6, 'password must have at least 6 characters in length')
+    .min(6, 'Password must have at least 6 characters in length')
     .required('Password is Required'),
 });
 
 export default function SignUp() {
-  function handleSubmit(data) {
-    console.tron.log(data);
+  const dispatch = useDispatch();
+
+  function handleSubmit({ name, email, password }) {
+    dispatch(signUpRequest(name, email, password));
   }
 
   return (
